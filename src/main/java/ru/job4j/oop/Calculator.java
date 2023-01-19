@@ -12,7 +12,7 @@ public class Calculator {
     }
 
     public int multiply(int y) {
-        return y / x;
+        return y * x;
     }
 
     public int sumAllOperation(int y) {
