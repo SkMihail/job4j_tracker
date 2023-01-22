@@ -22,7 +22,7 @@ public class Library {
         }
         System.out.println("Выведем книги с названием \"Clean code\":");
         for (Book book : shelfBook) {
-            if (book.getTitle().equals("Clean code")) {
+            if ("Clean code".equals(book.getTitle())) {
                 System.out.println("Название: " + book.getTitle()
                         + ", количество страниц:" + book.getNumOfPages());
             }
