@@ -22,6 +22,16 @@ public class Tracker {
         return null;
     }
 
+    public boolean replace(int id, Item newItem) {
+        for (Item item : items) {
+            if (item != null && item.getId() == id) {
+                item.setName(newItem.getName());
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Item[] findAll() {
         Item[] rsl = new Item[items.length];
         int size = 0;
