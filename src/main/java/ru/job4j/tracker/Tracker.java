@@ -15,17 +15,31 @@ public class Tracker {
 
     public Item findById(int id) {
         for (Item item : items) {
-            if (item.getId() == id) {
+            if (isIdExist(item, id)) {
                 return item;
             }
         }
         return null;
     }
 
+    private boolean isIdExist(Item item, int id) {
+        return item != null && item.getId() == id;
+    }
+
     public boolean replace(int id, Item newItem) {
         for (Item item : items) {
-            if (item != null && item.getId() == id) {
+            if (isIdExist(item, id)) {
                 item.setName(newItem.getName());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean delete(int id) {
+        for (int i = 0; i < items.length; i++) {
+            if (isIdExist(items[i], id)) {
+                items[i] = null;
                 return true;
             }
         }
