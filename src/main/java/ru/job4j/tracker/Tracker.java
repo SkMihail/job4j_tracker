@@ -13,61 +13,57 @@ public class Tracker {
         return item;
     }
 
+    private int indexOf(int id) {
+        int rsl = -1;
+        for (int index = 0; index < size; index++) {
+            if (items[index].getId() == id) {
+                rsl = index;
+                break;
+            }
+        }
+        return rsl;
+    }
+
     public Item findById(int id) {
-        for (Item item : items) {
-            if (isIdExist(item, id)) {
-                return item;
-            }
-        }
-        return null;
+        int index = indexOf(id);
+        return index != -1 ? items[index] : null;
     }
 
-    private boolean isIdExist(Item item, int id) {
-        return item != null && item.getId() == id;
-    }
-
-    public boolean replace(int id, Item newItem) {
-        for (Item item : items) {
-            if (isIdExist(item, id)) {
-                item.setName(newItem.getName());
-                return true;
-            }
+    public boolean replace(int id, Item replacement) {
+        int index = indexOf(id);
+        if (index == -1) {
+            return false;
         }
-        return false;
+        replacement.setId(id);
+        items[index] = replacement;
+        return true;
     }
 
     public boolean delete(int id) {
-        for (int i = 0; i < items.length; i++) {
-            if (isIdExist(items[i], id)) {
-                items[i] = null;
-                return true;
-            }
+        int index = indexOf(id);
+        if (index == -1) {
+            return false;
         }
-        return false;
+        System.arraycopy(items, index + 1, items, index, size - index - 1);
+        items[size - 1] = null;
+        size--;
+        return true;
     }
 
     public Item[] findAll() {
-        Item[] rsl = new Item[items.length];
-        int counter = 0;
-        for (Item item : items) {
-            if (item != null) {
-                rsl[counter] = item;
-                counter++;
-            }
-        }
-        return Arrays.copyOf(rsl, counter);
+        return Arrays.copyOf(items, size);
     }
 
     public Item[] findByName(String key) {
-        Item[] rsl = new Item[items.length];
+        Item[] foundItems = new Item[size];
         int counter = 0;
-        for (Item item : items) {
-            if (item != null && key.equals(item.getName())) {
-                rsl[counter] = item;
+        for (int i = 0; i < size; i++) {
+            if (key.equals(items[i].getName())) {
+                foundItems[counter] = items[i];
                 counter++;
             }
         }
-        return Arrays.copyOf(rsl, counter);
+        return Arrays.copyOf(foundItems, counter);
     }
 
 }
