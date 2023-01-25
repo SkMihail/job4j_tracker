@@ -15,11 +15,11 @@ public class Matches {
 
             if (matches < 1 || matches > 3 || matches > count) {
                 System.out.println("Некорректный ввод, попробуйте еще раз");
-                continue;
+            } else {
+                turn = !turn;
+                count -= matches;
+                System.out.printf("Спичек на столе осталось: %d%s", count, System.lineSeparator());
             }
-            turn = !turn;
-            count -= matches;
-            System.out.printf("Спичек на столе осталось: %d%s", count, System.lineSeparator());
         }
         if (!turn) {
             System.out.println("Выиграл первый игрок");
