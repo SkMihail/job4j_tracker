@@ -17,26 +17,6 @@ class StartUITest {
     }
 
     @Test
-    public void myTestWhenEditItem() {
-        Input in = new StubInput(new String[]{"0", "Test Name", "1", "1", "New Name", "2"});
-        Output out = new StubOutput();
-        Tracker tracker = new Tracker();
-        UserAction[] action = {new CreateAction(out), new EditAction(out), new ExitAction(out)};
-        new StartUI(out).init(in, tracker, action);
-        assertThat(tracker.findById(1).getName()).isEqualTo("New Name");
-    }
-
-    @Test
-    public void myTestWhenDeleteItem() {
-        Input in = new StubInput(new String[]{"0", "Test", "1", "1", "2"});
-        Output out = new StubOutput();
-        Tracker tracker = new Tracker();
-        UserAction[] action = {new CreateAction(out), new DeleteAction(out), new ExitAction(out)};
-        new StartUI(out).init(in, tracker, action);
-        assertThat(tracker.findById(1)).isNull();
-    }
-
-    @Test
     public void whenReplaceItem() {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("Replaced item"));
