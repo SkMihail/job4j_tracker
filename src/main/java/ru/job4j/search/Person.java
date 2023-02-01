@@ -28,8 +28,4 @@ public class Person {
     public String getAddress() {
         return address;
     }
-
-    public String summaryInfo() {
-        return getAddress() + " " +  getPhone() + " " + getName() + " " + getSurname();
-    }
 }
