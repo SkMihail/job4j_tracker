@@ -2,8 +2,20 @@ package ru.job4j.bank;
 
 import java.util.Objects;
 
+/**
+ * Класс описывает упрощённую модель данных
+ * банковского счета.
+ * @author Mikhail
+ * @version 1.0
+ */
 public class Account {
+    /**
+     * Поле используется для идентификации пользовательского счета
+     */
     private String requisite;
+    /**
+     * Поле содержит дебет пользователя по счету
+     */
     private double balance;
 
     public Account(String requisite, double balance) {

@@ -8,17 +8,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Класс описывает упрощённую модель работы
+ * банковского сервиса.
+ * @author Mikhail
+ * @version 1.0
+ */
 public class BankService {
+    /**
+     * Пользователи банка и их счета хранятся в коллекции HashMap
+     * ключём в коллекции является User, значением список счетов.
+     */
     private final Map<User, List<Account>> users = new HashMap<>();
 
+    /**
+     * Метод добавляет новго пользователя в список users.
+     * @param user пользователь которого добавляют в users.
+     */
     public void addUser(User user) {
-        users.putIfAbsent(user, new ArrayList<Account>());
+        users.putIfAbsent(user, new ArrayList<>());
     }
 
+    /**
+     * Метод удаляет пользователя из списка users.
+     * @param passport испоьлзуется для поиска уникального пользователя
+     * @return если пользователь найден и удалён, возвращает true, иначе false.
+     */
     public boolean deleteUser(String passport) {
         return null != users.remove(new User(passport, null));
     }
 
+    /**
+     * Метод осуществляет поиск пользователя в списке user,
+     * и добавляет новый счет
+     * @param passport используется для поиска уникального user
+     * @param account новый счет который добавляется user в коллекции users.
+     */
     public void addAccount(String passport, Account account) {
         User user = findByPassport(passport);
         List<Account> temp = users.get(user);
@@ -27,6 +52,12 @@ public class BankService {
         }
     }
 
+    /**
+     * Метод позволяет найти пользователя в списке users
+     * метод используется в {@link #addAccount(String, Account)} {@link #findByRequisite(String, String)}
+     * @param passport используется для поиска уникального user
+     * @return возвращает пользователя User с указанным passport
+     */
     public User findByPassport(String passport) {
         for (User user : users.keySet()) {
             if (user.getPassport().equals(passport)) {
@@ -36,6 +67,13 @@ public class BankService {
         return null;
     }
 
+    /**
+     * Метод используется для поиска счета {@link Account} у пользователя {@link User user}
+     * в коллекции  users.
+     * @param passport идентификатор для поиска пользователя.
+     * @param requisite идентификатор для поиска пользовательского счета.
+     * @return возвращает Account account пользователя.
+     */
     public Account findByRequisite(String passport, String requisite) {
         User user = findByPassport(passport);
         List<Account> accs = users.get(user);
@@ -50,6 +88,18 @@ public class BankService {
         return null;
     }
 
+    /**
+     * Метод используется для перевода денежных средств со счета пользователя на другой счет.
+     * В методе валидируется наличие пользователей отправляющего и принимающего платёж, и налчичие  средств
+     * на счету отправителя платежа.
+     * @param srcPassport Идентификатор пользователя со счета которого будут списаны деньги.
+     * @param srcRequisite Идентификатор пользовательского счета с которого будут списаны деньги.
+     * @param destPassport Идентификатор пользователя на счет которого будут зачислены деньги.
+     * @param destRequisite Идентификатор пользовательского счета на счет которого будут зачислены деньги.
+     * @param amount сумма к переводу/списанию
+     * @return возвращает true в случае успещного перевода. false в случае не перевода.
+     */
+
     public boolean transferMoney(String srcPassport, String srcRequisite,
                                  String destPassport, String destRequisite, double amount) {
         Account src = findByRequisite(srcPassport, srcRequisite);
@@ -62,6 +112,11 @@ public class BankService {
         return true;
     }
 
+    /**
+     * Метод для получения списка счетов пользователя {user}
+     * @param user пользователь чьи счета нужно получить
+     * @return вовзращает List счетов пользователя {user}
+     */
     public List<Account> getAccounts(User user) {
         return users.get(user);
     }
