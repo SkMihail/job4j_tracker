@@ -1,7 +1,7 @@
 package ru.job4j.search;
 
 import java.util.ArrayList;
-import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class PhoneDictionary {
     private ArrayList<Person> persons = new ArrayList<>();
@@ -11,15 +11,14 @@ public class PhoneDictionary {
     }
 
     public ArrayList<Person> find(String key) {
-        BiPredicate<Person, String> phone = (x, y) -> x.getPhone().contains(y);
-        BiPredicate<Person, String> name = (x, y) -> x.getName().contains(y);
-        BiPredicate<Person, String> address = (x, y) -> x.getAddress().contains(y);
-        BiPredicate<Person, String> surname = (x, y) -> x.getSurname().contains(y);
-        BiPredicate<Person, String> combine = (x, y) -> phone.test(x, y) || name.test(x, y)
-                || address.test(x, y) || surname.test(x, y);
+        Predicate<Person> phone = (x) -> x.getPhone().contains(key);
+        Predicate<Person> name = (x) -> x.getName().contains(key);
+        Predicate<Person> address = (x) -> x.getAddress().contains(key);
+        Predicate<Person> surname = (x) -> x.getSurname().contains(key);
+        Predicate<Person> combine = (x) -> phone.or(name.or(address.or(surname))).test(x);
         ArrayList<Person> res = new ArrayList<>();
         for (Person x : persons) {
-            if (combine.test(x, key)) {
+            if (combine.test(x)) {
                 res.add(x);
             }
         }
