@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductLabel {
+
     public List<String> generateLabels(List<Product> products) {
         return products.stream()
                 .filter(x -> x.standard() - x.actual() <= 3)
