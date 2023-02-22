@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Класс описывает упрощённую модель работы
  * банковского сервиса.
+ *
  * @author Mikhail
  * @version 1.0
  */
@@ -23,6 +24,7 @@ public class BankService {
 
     /**
      * Метод добавляет новго пользователя в список users.
+     *
      * @param user пользователь которого добавляют в users.
      */
     public void addUser(User user) {
@@ -31,6 +33,7 @@ public class BankService {
 
     /**
      * Метод удаляет пользователя из списка users.
+     *
      * @param passport испоьлзуется для поиска уникального пользователя
      * @return если пользователь найден и удалён, возвращает true, иначе false.
      */
@@ -41,8 +44,9 @@ public class BankService {
     /**
      * Метод осуществляет поиск пользователя в списке user,
      * и добавляет новый счет
+     *
      * @param passport используется для поиска уникального user
-     * @param account новый счет который добавляется user в коллекции users.
+     * @param account  новый счет который добавляется user в коллекции users.
      */
     public void addAccount(String passport, Account account) {
         User user = findByPassport(passport);
@@ -55,22 +59,22 @@ public class BankService {
     /**
      * Метод позволяет найти пользователя в списке users
      * метод используется в {@link #addAccount(String, Account)} {@link #findByRequisite(String, String)}
+     *
      * @param passport используется для поиска уникального user
      * @return возвращает пользователя User с указанным passport
      */
     public User findByPassport(String passport) {
-        for (User user : users.keySet()) {
-            if (user.getPassport().equals(passport)) {
-                return user;
-            }
-        }
-        return null;
+        return users.keySet().stream()
+                .filter(user -> passport.equals(user.getPassport()))
+                .findAny()
+                .orElse(null);
     }
 
     /**
      * Метод используется для поиска счета {@link Account} у пользователя {@link User user}
      * в коллекции  users.
-     * @param passport идентификатор для поиска пользователя.
+     *
+     * @param passport  идентификатор для поиска пользователя.
      * @param requisite идентификатор для поиска пользовательского счета.
      * @return возвращает Account account пользователя.
      */
@@ -80,23 +84,22 @@ public class BankService {
         if (accs == null) {
             return null;
         }
-        for (Account acc : accs) {
-            if (acc.getRequisite().equals(requisite)) {
-                return acc;
-            }
-        }
-        return null;
+        return accs.stream()
+                .filter(account -> requisite.equals(account.getRequisite()))
+                .findAny()
+                .orElse(null);
     }
 
     /**
      * Метод используется для перевода денежных средств со счета пользователя на другой счет.
      * В методе валидируется наличие пользователей отправляющего и принимающего платёж, и налчичие  средств
      * на счету отправителя платежа.
-     * @param srcPassport Идентификатор пользователя со счета которого будут списаны деньги.
-     * @param srcRequisite Идентификатор пользовательского счета с которого будут списаны деньги.
-     * @param destPassport Идентификатор пользователя на счет которого будут зачислены деньги.
+     *
+     * @param srcPassport   Идентификатор пользователя со счета которого будут списаны деньги.
+     * @param srcRequisite  Идентификатор пользовательского счета с которого будут списаны деньги.
+     * @param destPassport  Идентификатор пользователя на счет которого будут зачислены деньги.
      * @param destRequisite Идентификатор пользовательского счета на счет которого будут зачислены деньги.
-     * @param amount сумма к переводу/списанию
+     * @param amount        сумма к переводу/списанию
      * @return возвращает true в случае успещного перевода. false в случае не перевода.
      */
 
@@ -114,6 +117,7 @@ public class BankService {
 
     /**
      * Метод для получения списка счетов пользователя {user}
+     *
      * @param user пользователь чьи счета нужно получить
      * @return вовзращает List счетов пользователя {user}
      */
