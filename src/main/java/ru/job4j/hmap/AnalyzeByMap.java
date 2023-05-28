@@ -30,12 +30,7 @@ public class AnalyzeByMap {
     }
 
     public static List<Label> averageScoreBySubject(List<Pupil> pupils) {
-        HashMap<String, Double> subjectMap = new LinkedHashMap<>();
-        for (Pupil pupil : pupils) {
-            for (Subject sub : pupil.subjects()) {
-                subjectMap.merge(sub.name(), (double) sub.score(), Double::sum);
-            }
-        }
+        HashMap<String, Double> subjectMap = getSubjectMap(pupils);
         List<Label> res = new ArrayList<>();
         for (String key : subjectMap.keySet()) {
             res.add(new Label(key, subjectMap.get(key) / pupils.size()));
@@ -57,15 +52,20 @@ public class AnalyzeByMap {
     }
 
     public static Label bestSubject(List<Pupil> pupils) {
-        HashMap<String, Integer> subjectMap = new LinkedHashMap<>();
-        for (Pupil pupil : pupils) {
-            for (Subject sub : pupil.subjects()) {
-                subjectMap.merge(sub.name(), sub.score(), Integer::sum);
-            }
-        }
-        Optional<Map.Entry<String, Integer>> maxEntry = subjectMap.entrySet()
+        HashMap<String, Double> subjectMap = getSubjectMap(pupils);
+        Optional<Map.Entry<String, Double>> maxEntry = subjectMap.entrySet()
                 .stream()
                 .max(Map.Entry.comparingByValue());
         return new Label(maxEntry.get().getKey(), maxEntry.get().getValue());
+    }
+
+    private static HashMap<String, Double> getSubjectMap(List<Pupil> pupils) {
+        HashMap<String, Double> subjectMap = new LinkedHashMap<>();
+        for (Pupil pupil : pupils) {
+            for (Subject sub : pupil.subjects()) {
+                subjectMap.merge(sub.name(), (double) sub.score(), Double::sum);
+            }
+        }
+        return subjectMap;
     }
 }
