@@ -57,10 +57,15 @@ public class AnalyzeByMap {
     }
 
     public static Label bestSubject(List<Pupil> pupils) {
-        List<Label> res = averageScoreBySubject(pupils);
-        res.sort(Comparator.naturalOrder());
-        String nameBest = res.get(res.size() - 1).name();
-        double bestScore = res.get(res.size() - 1).score() * pupils.size();
-        return new Label(nameBest, bestScore);
+        HashMap<String, Integer> subjectMap = new LinkedHashMap<>();
+        for (Pupil pupil : pupils) {
+            for (Subject sub : pupil.subjects()) {
+                subjectMap.merge(sub.name(), sub.score(), Integer::sum);
+            }
+        }
+        Optional<Map.Entry<String, Integer>> maxEntry = subjectMap.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue());
+        return new Label(maxEntry.get().getKey(), maxEntry.get().getValue());
     }
 }
