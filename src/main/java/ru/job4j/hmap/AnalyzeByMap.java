@@ -33,7 +33,7 @@ public class AnalyzeByMap {
         HashMap<String, Double> subjectMap = new LinkedHashMap<>();
         for (Pupil pupil : pupils) {
             for (Subject sub : pupil.subjects()) {
-                subjectMap.put(sub.name(), sub.score() + subjectMap.getOrDefault(sub.name(), 0D));
+                subjectMap.merge(sub.name(), (double) sub.score(), Double::sum);
             }
         }
         List<Label> res = new ArrayList<>();
